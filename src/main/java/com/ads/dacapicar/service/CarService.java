@@ -37,26 +37,38 @@ public class CarService {
         return CarMapper.toDto(car);
     }
 
-    public CarResponseDTO updateCar(Long id, CarRequestDTO carRequestDTO){
-        Optional<Car> carOptional = carRepository.findById(id);
-        if(carOptional.isPresent()){
-            Car car = carOptional.get();
-            car.setName(carRequestDTO.getName());
-            car.setPrice(carRequestDTO.getPrice());
-            car.setYear(carRequestDTO.getYear());
-            car.setCity(carRequestDTO.getCity());
-            car.setCompany(carRequestDTO.getCompany());
-            car.setPlaca(carRequestDTO.getPlaca());
+    public List<CarResponseDTO> createMultipleCars(List<CarRequestDTO> carRequestDTOList) {
+        List<Car> cars = carRequestDTOList.stream()
+                .map(CarMapper::toEntity)
+                .collect(Collectors.toList());
 
-            car = carRepository.save(car);
-            return CarMapper.toDto(car);
-        }
+        List<Car> savedCars = carRepository.saveAll(cars);  // Salva todos os carros de uma vez
 
-        return null;
+        return savedCars.stream()
+                .map(CarMapper::toDto)
+                .collect(Collectors.toList());
     }
 
 
-    public void deletCar(Long id){
+    public CarResponseDTO updateCar(Long id, CarRequestDTO carRequestDTO) {
+        Car car = carRepository.findById(id)
+                .orElseThrow(() -> new CarNotFoundException("Carro não encontrado com o ID: " + id));
+
+        car.setName(carRequestDTO.getName());
+        car.setPrice(carRequestDTO.getPrice());
+        car.setYear(carRequestDTO.getYear());
+        car.setCity(carRequestDTO.getCity());
+        car.setPlaca(carRequestDTO.getPlaca());
+        car.setCompany(carRequestDTO.getCompany());
+
+        car = carRepository.save(car);
+
+        return CarMapper.toDto(car);
+    }
+
+
+
+    public void deleteCar(Long id){
         carRepository.deleteById(id);
     }
 
