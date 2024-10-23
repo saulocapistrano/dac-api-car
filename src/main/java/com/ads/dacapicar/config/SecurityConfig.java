@@ -69,6 +69,7 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.POST, "/api/users/").hasAuthority("PRIVILEGE")
                 .antMatchers(HttpMethod.POST, "/api/users/bulk/").hasAuthority("PRIVILEGE")
                 .antMatchers(HttpMethod.PUT, "/api/users/").hasAuthority("PRIVILEGE")
+                .antMatchers(HttpMethod.PUT, "/api/users//change-password/").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/api/users/").hasAuthority("PRIVILEGE")
                 .anyRequest().authenticated()
                 .and()
