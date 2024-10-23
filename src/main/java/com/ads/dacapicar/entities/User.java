@@ -1,12 +1,17 @@
 package com.ads.dacapicar.entities;
 
 import com.ads.dacapicar.entities.enums.TypeUser;
-import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "user_person")
@@ -127,5 +132,16 @@ public class User {
 
     public void setTypeUser(TypeUser typeUser) {
         this.typeUser = typeUser;
+    }
+
+    public List<GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        // Converte o TypeUser em uma Role para o Spring Security
+        if (this.typeUser != null) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + this.typeUser.name()));
+        }
+
+        return authorities;
     }
 }
