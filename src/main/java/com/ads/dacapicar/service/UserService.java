@@ -1,6 +1,7 @@
 package com.ads.dacapicar.service;
 
 import com.ads.dacapicar.entities.User;
+import com.ads.dacapicar.entities.dto.request.PasswordChangeRequestDTO;
 import com.ads.dacapicar.entities.dto.request.UserRequestDTO;
 import com.ads.dacapicar.entities.dto.response.UserResponseDTO;
 import com.ads.dacapicar.entities.map.UserMapper;
@@ -91,5 +92,17 @@ public class UserService {
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    public void changePassword(Long userId, PasswordChangeRequestDTO passwordChangeRequestDTO) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
+
+        if (!passwordEncoder.matches(passwordChangeRequestDTO.getOldPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("Senha antiga incorreta.");
+        }
+
+        user.setPassword(passwordEncoder.encode(passwordChangeRequestDTO.getNewPassword()));
+        userRepository.save(user);
     }
 }
