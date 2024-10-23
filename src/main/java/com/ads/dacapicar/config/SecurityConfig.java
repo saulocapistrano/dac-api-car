@@ -56,8 +56,9 @@ public class SecurityConfig {
             http.headers().frameOptions().disable();
         }
                 http.cors().and().csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/api/auth/**").permitAll()
+                .authorizeRequests().antMatchers("/api/auth/**").permitAll()
+
+                .antMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
                 .antMatchers("/error").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/cars/**").authenticated()
                 .antMatchers(HttpMethod.GET, "/api/users/**").authenticated()
@@ -68,6 +69,7 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.POST, "/api/users/").hasAuthority("PRIVILEGE")
                 .antMatchers(HttpMethod.POST, "/api/users/bulk/").hasAuthority("PRIVILEGE")
                 .antMatchers(HttpMethod.PUT, "/api/users/").hasAuthority("PRIVILEGE")
+                .antMatchers(HttpMethod.PUT, "/api/users//change-password/").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/api/users/").hasAuthority("PRIVILEGE")
                 .anyRequest().authenticated()
                 .and()
