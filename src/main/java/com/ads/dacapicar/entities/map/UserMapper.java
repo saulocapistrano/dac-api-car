@@ -23,14 +23,6 @@ public class UserMapper {
     }
 
     public static UserResponseDTO toDto(User user) {
-        return new UserResponseDTO(
-                user.getId(),
-                user.getName(),
-                user.getEmail(),
-                user.getPhoneNumber(),
-                user.getBirthDate(),
-                user.getCpf(),
-                user.getTypeUser()
-        );
+        return new UserResponseDTO(user);
     }
 }

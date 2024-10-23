@@ -42,7 +42,7 @@ public class CarService {
                 .map(CarMapper::toEntity)
                 .collect(Collectors.toList());
 
-        List<Car> savedCars = carRepository.saveAll(cars);  // Salva todos os carros de uma vez
+        List<Car> savedCars = carRepository.saveAll(cars);
 
         return savedCars.stream()
                 .map(CarMapper::toDto)

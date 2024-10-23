@@ -7,7 +7,7 @@ import com.ads.dacapicar.entities.map.UserMapper;
 import com.ads.dacapicar.exception.UserNotFoundException;
 import com.ads.dacapicar.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,10 +19,11 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private EmailService emailService;
 
     public List<UserResponseDTO> findAll() {
         return userRepository.findAll().stream()
@@ -40,6 +41,11 @@ public class UserService {
         User user = UserMapper.toEntity(userRequestDTO);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user = userRepository.save(user);
+        emailService.sendWelcomeEmail(
+                user.getEmail(),
+                "Bem-vindo ao Sistema de Carros",
+                "Olá " + user.getName() + ", bem-vindo ao nosso sistema!"
+        );
         return UserMapper.toDto(user);
     }
 
@@ -51,10 +57,18 @@ public class UserService {
         users.forEach(user -> user.setPassword(passwordEncoder.encode(user.getPassword())));
 
         List<User> savedUsers = userRepository.saveAll(users);
+
+        savedUsers.forEach(user -> emailService.sendWelcomeEmail(
+                user.getEmail(),
+                "Bem-vindo ao Sistema de Carros",
+                "Olá " + user.getName() + ", bem-vindo ao nosso sistema!"
+        ));
+
         return savedUsers.stream()
                 .map(UserMapper::toDto)
                 .collect(Collectors.toList());
     }
+
 
     public UserResponseDTO updateUser(Long id, UserRequestDTO userRequestDTO) {
         User user = userRepository.findById(id)

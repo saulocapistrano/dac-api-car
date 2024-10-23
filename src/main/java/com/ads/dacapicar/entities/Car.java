@@ -1,6 +1,6 @@
 package com.ads.dacapicar.entities;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
