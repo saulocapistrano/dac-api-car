@@ -4,6 +4,7 @@ import com.ads.dacapicar.entities.dto.request.AuthenticationRequestDTO;
 import com.ads.dacapicar.entities.dto.response.AuthenticationResponseDTO;
 import com.ads.dacapicar.service.impl.UserDetailsServiceImpl;
 import com.ads.dacapicar.utils.JwtUtil;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/auth")
+@SecurityRequirement(name = "bearerAuth")
 public class AuthenticationController {
 
     @Autowired
