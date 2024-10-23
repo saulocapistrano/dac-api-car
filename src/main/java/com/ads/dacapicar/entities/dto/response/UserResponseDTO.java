@@ -1,5 +1,6 @@
 package com.ads.dacapicar.entities.dto.response;
 
+import com.ads.dacapicar.entities.User;
 import com.ads.dacapicar.entities.enums.TypeUser;
 import java.time.LocalDate;
 
@@ -13,17 +14,17 @@ public class UserResponseDTO {
     private String cpf;
     private TypeUser typeUser;
 
-    public UserResponseDTO(Long id, String name, String email, String phoneNumber, LocalDate birthDate, String cpf, TypeUser typeUser) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.birthDate = birthDate;
-        this.cpf = cpf;
-        this.typeUser = typeUser;
+    public UserResponseDTO(User obj) {
+        super();
+        this.id = obj.getId();
+        this.name = obj.getName();
+        this.email = obj.getEmail();
+        this.phoneNumber = obj.getPhoneNumber();
+        this.birthDate = obj.getBirthDate();
+        this.cpf = obj.getCpf();
+        this.typeUser = obj.getTypeUser();
     }
 
-    // Getters e Setters
 
     public Long getId() {
         return id;
