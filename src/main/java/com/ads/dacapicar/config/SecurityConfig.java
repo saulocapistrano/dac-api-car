@@ -56,8 +56,9 @@ public class SecurityConfig {
             http.headers().frameOptions().disable();
         }
                 http.cors().and().csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/api/auth/**").permitAll()
+                .authorizeRequests().antMatchers("/api/auth/**").permitAll()
+
+                .antMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
                 .antMatchers("/error").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/cars/**").authenticated()
                 .antMatchers(HttpMethod.GET, "/api/users/**").authenticated()
