@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class QRCodeService {
+public class CarQRCodeService {
 
     public void generateQRCode(String text, int width, int height, String filePath) throws Exception {
         QRCodeWriter qrCodeWriter = new QRCodeWriter();

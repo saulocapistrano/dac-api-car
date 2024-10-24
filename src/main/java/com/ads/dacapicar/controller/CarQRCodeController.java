@@ -2,7 +2,7 @@ package com.ads.dacapicar.controller;
 
 import com.ads.dacapicar.entities.dto.response.CarResponseDTO;
 import com.ads.dacapicar.service.CarService;
-import com.ads.dacapicar.service.QRCodeService;
+import com.ads.dacapicar.service.CarQRCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +22,7 @@ public class CarQRCodeController {
     private CarService carService;
 
     @Autowired
-    private QRCodeService qrCodeService;
+    private CarQRCodeService qrCodeService;
 
     @GetMapping("/{id}/qrcode")
     public ResponseEntity<byte[]> generateCarQRCode(@PathVariable Long id) throws Exception {
