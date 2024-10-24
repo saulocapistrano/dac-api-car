@@ -73,6 +73,7 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.PUT, "/api/users/").hasAuthority("PRIVILEGE")
                 .antMatchers(HttpMethod.PUT, "/api/users/change-password/").authenticated()
                 .antMatchers(HttpMethod.DELETE, "/api/users/").hasAuthority("PRIVILEGE")
+                        .antMatchers(HttpMethod.GET,"/api/qrcode/").authenticated()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
