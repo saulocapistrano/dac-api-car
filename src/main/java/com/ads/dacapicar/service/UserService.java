@@ -38,17 +38,29 @@ public class UserService {
         return UserMapper.toDto(user);
     }
 
+
+
     public UserResponseDTO createUser(UserRequestDTO userRequestDTO) {
+        if (userRepository.findByEmail(userRequestDTO.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("E-mail já cadastrado: " + userRequestDTO.getEmail());
+        }
+
+        if (userRepository.findByCpf(userRequestDTO.getCpf()).isPresent()) {
+            throw new IllegalArgumentException("CPF já cadastrado: " + userRequestDTO.getCpf());
+        }
+
+
         User user = UserMapper.toEntity(userRequestDTO);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user = userRepository.save(user);
-        emailService.sendWelcomeEmail(
-                user.getEmail(),
-                "Bem-vindo ao Sistema de Carros",
-                "Olá " + user.getName() + ", bem-vindo ao nosso sistema!"
-        );
+
+        sendWelcomeEmail(user);
+
         return UserMapper.toDto(user);
     }
+
+
+
 
     public List<UserResponseDTO> createMultipleUsers(List<UserRequestDTO> userRequestDTOList) {
         List<User> users = userRequestDTOList.stream()
@@ -59,11 +71,7 @@ public class UserService {
 
         List<User> savedUsers = userRepository.saveAll(users);
 
-        savedUsers.forEach(user -> emailService.sendWelcomeEmail(
-                user.getEmail(),
-                "Bem-vindo ao Sistema de Carros",
-                "Olá " + user.getName() + ", bem-vindo ao nosso sistema!"
-        ));
+        savedUsers.forEach(this::sendWelcomeEmail);
 
         return savedUsers.stream()
                 .map(UserMapper::toDto)
@@ -104,5 +112,13 @@ public class UserService {
 
         user.setPassword(passwordEncoder.encode(passwordChangeRequestDTO.getNewPassword()));
         userRepository.save(user);
+    }
+
+    private void sendWelcomeEmail(User user) {
+        emailService.sendWelcomeEmail(
+                user.getEmail(), "Bem vindo ao DAC-CAR",
+                "olá" + user.getName() + ", seja bem vindo."
+        );
+
     }
 }
