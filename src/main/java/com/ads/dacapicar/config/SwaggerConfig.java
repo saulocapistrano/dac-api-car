@@ -21,7 +21,7 @@ public class SwaggerConfig {
     public GroupedOpenApi publicApi() {
         return GroupedOpenApi.builder()
                 .group("dac-apicar")
-                .pathsToMatch("/api/**") // Define quais endpoints devem aparecer no Swagger
+                .pathsToMatch("/api/**")
                 .build();
     }
 }
